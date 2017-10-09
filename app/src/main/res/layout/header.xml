@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+    <LinearLayout
+    android:id="@+id/saosao"
+        android:padding="5dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+<ImageView
+    android:src="@mipmap/atl"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <TextView
+        android:text="扫啊扫"
+        android:textColor="@color/hei"
+        android:textSize="@dimen/saofontsize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+     <EditText
+
+        android:layout_margin="7dp"
+        android:background="@drawable/sousuo"
+        android:layout_width="250dp"
+         android:focusable="false"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:src="@mipmap/hb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:src="@mipmap/xx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

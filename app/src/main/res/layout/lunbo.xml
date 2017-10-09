@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/lunbo"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.stx.xhb.xbanner.XBanner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:AutoPlayTime="3000"
+        app:pointNormal="@drawable/select_normal"
+        app:pointSelect="@drawable/select_selected"
+        app:pointsPosition="CENTER"></com.stx.xhb.xbanner.XBanner>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"></android.support.v4.view.ViewPager>
+
+</LinearLayout>
