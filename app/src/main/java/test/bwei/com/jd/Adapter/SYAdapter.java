@@ -32,7 +32,6 @@ public class SYAdapter extends RecyclerView.Adapter<SYAdapter.myViewHolder> {
     public SYAdapter.myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view=LayoutInflater.from(context).inflate(R.layout.tuijian,parent,false);
         myViewHolder holder=new myViewHolder(view);
-        //给view注册点击事件
 
         return holder;
     }
@@ -55,9 +54,6 @@ public class SYAdapter extends RecyclerView.Adapter<SYAdapter.myViewHolder> {
     public int getItemCount() {
         return list.size();
     }
-
-
-
     class myViewHolder extends RecyclerView.ViewHolder{
 
         private final ImageView img;
@@ -71,6 +67,9 @@ public class SYAdapter extends RecyclerView.Adapter<SYAdapter.myViewHolder> {
             title = itemView.findViewById(R.id.title);
         }
     }
+
+
+
     private itemClick itemClick;
     public void setOnItemClick(itemClick itemClick){
         this.itemClick=itemClick;

@@ -1,5 +1,6 @@
 package test.bwei.com.jd.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,13 +39,14 @@ import test.bwei.com.jd.Bean.BannerBean;
 import test.bwei.com.jd.Bean.Kind;
 import test.bwei.com.jd.Bean.KindBean;
 import test.bwei.com.jd.Bean.Sybean;
+import test.bwei.com.jd.GoodsDetail;
 import test.bwei.com.jd.R;
 
 /**
  * Created by C on 2017/9/29.
  */
 
-public class Fragment1 extends Fragment{
+public class Fragment1 extends Fragment {
 
     private View v;
     private XBanner banner;
@@ -61,7 +63,7 @@ public class Fragment1 extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        v = View.inflate(getActivity(), R.layout.fragment1,null);
+        v = View.inflate(getActivity(), R.layout.fragment1, null);
         return v;
     }
 
@@ -69,27 +71,27 @@ public class Fragment1 extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
+
         initData();
     }
 
     private void initData() {
 
-        OkHttpClient okhttpclient=new OkHttpClient();
-        final Request request=new Request.Builder().url(Api.BannerInfo).build();
+        OkHttpClient okhttpclient = new OkHttpClient();
+        final Request request = new Request.Builder().url(Api.BannerInfo).build();
         okhttpclient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String s=response.body().string();
-                Gson gson=new Gson();
+                String s = response.body().string();
+                Gson gson = new Gson();
                 BannerBean bannerBean = gson.fromJson(s, BannerBean.class);
                 final List<BannerBean.DataBean> data = bannerBean.data;
-                bannerInfo=new ArrayList<>();
-                tjinfo=new ArrayList<>();
+                bannerInfo = new ArrayList<>();
+                tjinfo = new ArrayList<>();
 
                 for (BannerBean.DataBean dataBean : data) {
                     bannerInfo.add(dataBean.icon);
@@ -97,51 +99,56 @@ public class Fragment1 extends Fragment{
                 BannerBean.TuijianBean tuijian = bannerBean.tuijian;
                 List<BannerBean.TuijianBean.ListBean> list = tuijian.list;
                 for (BannerBean.TuijianBean.ListBean listBean : list) {
-                  Sybean sybean=new Sybean();
-                    sybean.price=listBean.price;
-
-                    sybean.title=listBean.title;
-                    System.out.println(listBean.title);
+                    Sybean sybean = new Sybean();
+                    sybean.price = listBean.price;
+                    sybean.pid=listBean.pid+"";
+                    sybean.title = listBean.title;
                     String images = listBean.images;
                     String[] split = images.split("\\|");
-                    sybean.img=split[0];
+                    sybean.img = split[0];
                     tjinfo.add(sybean);
                 }
 
-            banner.setData(bannerInfo,null);
-                        banner.setmAdapter(new XBanner.XBannerAdapter() {
-                            @Override
-                            public void loadBanner(XBanner banner, Object model, View view, int position) {
-                                Glide.with(getActivity()).load(bannerInfo.get(position)).into((ImageView) view);
-                            }
-                        });
+                banner.setData(bannerInfo, null);
+                if(getActivity()!=null){
+                    banner.setmAdapter(new XBanner.XBannerAdapter() {
+                        @Override
+                        public void loadBanner(XBanner banner, Object model, View view, int position) {
+                            Glide.with(getActivity()).load(bannerInfo.get(position)).into((ImageView) view);
+                        }
+                    });
+                }
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                SYAdapter adapter=new SYAdapter(getActivity(),tjinfo);
-                rlv.setLayoutManager(new GridLayoutManager(getActivity(),2));
-                RecyclerViewHeader header=new RecyclerViewHeader(getActivity());
-                //添加头布局
-                header.attachTo(rlv);
-                header.addView(vv);
+                if(getActivity()!=null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            SYAdapter adapter = new SYAdapter(getActivity(), tjinfo);
+                            rlv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                            RecyclerViewHeader header = new RecyclerViewHeader(getActivity());
+                            //添加头布局
+                            header.attachTo(rlv);
+                            header.addView(vv);
+                            rlv.setAdapter(adapter);
+                            adapter.setOnItemClick(new SYAdapter.itemClick() {
+                                @Override
+                                public void ItemOnclick(View v, int postion) {
+                                    String pid = tjinfo.get(postion).pid;
+                                    Intent intetn=new Intent(getActivity(), GoodsDetail.class);
+                                    intetn.putExtra("pid",pid);
+                                    startActivity(intetn);
+                                }
+                            });
+                        }
+                    });
+                }
 
-                rlv.setAdapter(adapter);
-                adapter.setOnItemClick(new SYAdapter.itemClick() {
-                    @Override
-                    public void ItemOnclick(View v, int postion) {
-                        Toast.makeText(getActivity(),postion+"++++",Toast.LENGTH_SHORT).show();
-                    }
-                });
+
             }
         });
 
-            }
-        });
-
-        final Request request1=new Request.Builder().url(Api.Kind).build();
+        final Request request1 = new Request.Builder().url(Api.Kind).build();
         okhttpclient.newCall(request1).enqueue(new Callback() {
-
 
 
             @Override
@@ -151,31 +158,42 @@ public class Fragment1 extends Fragment{
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                    String ss=response.body().string();
-                Gson gson=new Gson();
+                String ss = response.body().string();
+                Gson gson = new Gson();
                 KindBean kindBean = gson.fromJson(ss, KindBean.class);
-                List<KindBean.DataBean>  data = kindBean.data;
-                kindlist =new ArrayList<>();
+                List<KindBean.DataBean> data = kindBean.data;
+                kindlist = new ArrayList<>();
                 for (KindBean.DataBean dataBean : data) {
-                    Kind kind=new Kind();
-                    kind.cid=dataBean.cid;
-                    kind.name=dataBean.name;
-                    kind.icon=dataBean.icon;
+                    Kind kind = new Kind();
+                    kind.cid = dataBean.cid;
+                    kind.name = dataBean.name;
+                    kind.icon = dataBean.icon;
+                    kind.ishome = dataBean.ishome;
                     kindlist.add(kind);
                 }
-                vp.setAdapter(new ada());
+                if(getActivity()!=null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            vp.setAdapter(new ada());
+                        }
+                    });
+
+                }
+
             }
         });
     }
 
     private void initView() {
         rlv = v.findViewById(R.id.rlv);
-        vv = View.inflate(getActivity(), R.layout.lunbo,null);
-       banner = vv.findViewById(R.id.banner);
+        vv = View.inflate(getActivity(), R.layout.lunbo, null);
+        banner = vv.findViewById(R.id.banner);
         vp = vv.findViewById(R.id.vp);
 
     }
-    class ada extends PagerAdapter{
+
+    class ada extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -184,24 +202,29 @@ public class Fragment1 extends Fragment{
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view==object;
+            return view == object;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-          container.removeView((View) object);
+            container.removeView((View) object);
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View v=View.inflate(getActivity(),R.layout.vpitem,null);
-            GridView gv=v.findViewById(R.id.gv);
-            gv.setAdapter(new gada());
+
+                View v = View.inflate(getActivity(), R.layout.vpitem, null);
+            GridView gv = v.findViewById(R.id.gv);
+            if(getActivity()!=null){
+                gv.setAdapter(new gada());
+            }
+
             container.addView(v);
             return v;
         }
     }
-    class gada extends BaseAdapter{
+
+    class gada extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -220,9 +243,9 @@ public class Fragment1 extends Fragment{
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            View v=View.inflate(getActivity(),R.layout.gridviewadapter,null);
-            ImageView img=v.findViewById(R.id.kimg);
-            TextView tv=v.findViewById(R.id.ktv);
+            View v = View.inflate(getActivity(), R.layout.gridviewadapter, null);
+            ImageView img = v.findViewById(R.id.kimg);
+            TextView tv = v.findViewById(R.id.ktv);
             Glide.with(getActivity()).load(kindlist.get(i).icon).into(img);
             tv.setText(kindlist.get(i).name);
             return v;

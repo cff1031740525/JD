@@ -8,4 +8,5 @@ public class Sybean {
     public String img;
     public String title;
     public double price;
+    public String pid;
 }

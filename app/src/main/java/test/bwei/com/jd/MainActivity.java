@@ -1,10 +1,13 @@
 package test.bwei.com.jd;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
 
 import test.bwei.com.jd.Fragment.Fragment1;
 import test.bwei.com.jd.Fragment.Fragment2;
