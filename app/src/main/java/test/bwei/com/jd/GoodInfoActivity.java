@@ -1,6 +1,7 @@
 package test.bwei.com.jd;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +29,7 @@ import test.bwei.com.jd.Adapter.GridetAdapter;
 import test.bwei.com.jd.Adapter.ProductAdapter;
 import test.bwei.com.jd.Bean.ProductInfo;
 
-public class GoodInfoActivity extends AppCompatActivity {
+public class GoodInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView zh;
     private TextView xl;
@@ -36,19 +38,23 @@ public class GoodInfoActivity extends AppCompatActivity {
     private String sort;
     private List<ProductInfo.DataBean> data;
     private int status = 0;
+    private String psdcid;
+    private boolean flag=false;
+    private EditText sousuo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_info);
         getSupportActionBar().hide();
+        Intent intent = getIntent();
+        psdcid = intent.getStringExtra("pscid");
         initView();
         initData();
     }
 
     private void initData() {
-        Intent intent = getIntent();
-        String psdcid = intent.getStringExtra("pscid");
+
         OkHttpClient okHttpClient = new OkHttpClient();
         FormBody.Builder builder = new FormBody.Builder();
         builder.add("pscid", psdcid);
@@ -76,8 +82,8 @@ public class GoodInfoActivity extends AppCompatActivity {
                         @Override
                         public void itemOnclick(View v, String pid) {
                             Intent intent = new Intent(GoodInfoActivity.this, GoodsDetail.class);
-                            intent.putExtra("pid",pid);
-                            Toast.makeText(GoodInfoActivity.this,pid,Toast.LENGTH_SHORT).show();
+                            intent.putExtra("pid", pid);
+                            Toast.makeText(GoodInfoActivity.this, pid, Toast.LENGTH_SHORT).show();
                             startActivity(intent);
                         }
                     });
@@ -101,7 +107,13 @@ public class GoodInfoActivity extends AppCompatActivity {
         zh = (TextView) findViewById(R.id.zh);
         xl = (TextView) findViewById(R.id.xl);
         jg = (TextView) findViewById(R.id.jg);
+        sousuo = (EditText) findViewById(R.id.ss);
+        zh.setOnClickListener(this);
+        xl.setOnClickListener(this);
+        jg.setOnClickListener(this);
+        zh.setTextColor(Color.RED);
         rlv = (RecyclerView) findViewById(R.id.girlv);
+
     }
 
     public void ggg(View view) {
@@ -112,10 +124,41 @@ public class GoodInfoActivity extends AppCompatActivity {
             status = 0;
         } else {
             ProductAdapter adapter = new ProductAdapter(data, GoodInfoActivity.this);
-            rlv.setLayoutManager(new LinearLayoutManager(GoodInfoActivity.this, LinearLayoutManager.VERTICAL, false));
+            rlv.setLayoutManager(new LinearLayoutManager(GoodInfoActivity.this, LinearLayoutManager.VERTICAL, flag));
             rlv.setAdapter(adapter);
             status = 1;
+
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.zh:
+                sort=0+"";
+                initData();
+                zh.setTextColor(Color.RED);
+                xl.setTextColor(Color.BLACK);
+                jg.setTextColor(Color.BLACK);
+                break;
+            case R.id.xl:
+                sort=1+"";
+                initData();
+                xl.setTextColor(Color.RED);
+                zh.setTextColor(Color.BLACK);
+                jg.setTextColor(Color.BLACK);
+                break;
+            case R.id.jg:
+                sort=2+"";
+                if(flag==false){
+                    flag=true;
+                }
+                initData();
+                jg.setTextColor(Color.RED);
+                xl.setTextColor(Color.BLACK);
+                zh.setTextColor(Color.BLACK);
+                break;
+        }
     }
 }

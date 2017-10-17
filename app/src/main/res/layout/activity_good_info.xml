@@ -23,6 +23,7 @@
             android:src="@mipmap/fh" />
 
         <EditText
+            android:id="@+id/ss"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView2"
