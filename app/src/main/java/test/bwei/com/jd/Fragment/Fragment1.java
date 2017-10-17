@@ -2,12 +2,15 @@ package test.bwei.com.jd.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +36,7 @@ import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import test.bwei.com.jd.Adapter.MiaoshaAdapter;
 import test.bwei.com.jd.Adapter.SYAdapter;
 import test.bwei.com.jd.Api;
 import test.bwei.com.jd.Bean.BannerBean;
@@ -58,6 +62,22 @@ public class Fragment1 extends Fragment {
     private View vv;
     private View v2;
     private ViewPager vp;
+    private SwipeRefreshLayout sw1;
+    private RecyclerView miaoshas;
+    private TextView hour;
+    private TextView minute;
+    private TextView seconds;
+    private int xiaoshi=1;
+    private int fenzhong=60;
+    private int miao=59;
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+        }
+    };
 
     @Nullable
     @Override
@@ -90,6 +110,21 @@ public class Fragment1 extends Fragment {
                 Gson gson = new Gson();
                 BannerBean bannerBean = gson.fromJson(s, BannerBean.class);
                 final List<BannerBean.DataBean> data = bannerBean.data;
+                BannerBean.MiaoshaBean miaosha = bannerBean.miaosha;
+                List<BannerBean.MiaoshaBean.ListBeanX> list1 = miaosha.list;
+
+                final MiaoshaAdapter miaoshaAdapter=new MiaoshaAdapter(list1,getActivity());
+                if(getActivity()!=null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            miaoshas.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+                            miaoshas.setAdapter(miaoshaAdapter);
+                        }
+                    });
+
+                }
+
                 bannerInfo = new ArrayList<>();
                 tjinfo = new ArrayList<>();
 
@@ -117,6 +152,7 @@ public class Fragment1 extends Fragment {
                             Glide.with(getActivity()).load(bannerInfo.get(position)).into((ImageView) view);
                         }
                     });
+
                 }
 
                 if(getActivity()!=null){
@@ -190,8 +226,25 @@ public class Fragment1 extends Fragment {
         vv = View.inflate(getActivity(), R.layout.lunbo, null);
         banner = vv.findViewById(R.id.banner);
         vp = vv.findViewById(R.id.vp);
-
+        sw1 = v.findViewById(R.id.sw);
+        hour = vv.findViewById(R.id.hour);
+        minute = vv.findViewById(R.id.minute);
+        seconds = vv.findViewById(R.id.second);
+        miaoshas = vv.findViewById(R.id.miaosha);
+        sw1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getActivity(),"刷新成功",Toast.LENGTH_SHORT).show();
+                sw1.setRefreshing(false);
+            }
+        });
     }
+    Runnable second=new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
 
     class ada extends PagerAdapter {
 

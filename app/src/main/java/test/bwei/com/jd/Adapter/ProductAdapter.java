@@ -36,12 +36,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.myViewHo
     }
 
     @Override
-    public void onBindViewHolder(myViewHolder holder, int position) {
+    public void onBindViewHolder(myViewHolder holder, final int position) {
         holder.price.setText(list.get(position).price + "");
         holder.title.setText(list.get(position).title);
         String images = list.get(position).images;
         String[] split = images.split("\\|");
         Glide.with(context).load(split[0]).into(holder.img);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onclickListener.itemOnclick(v, list.get(position).pid+"");
+            }
+        });
     }
 
     @Override
@@ -62,5 +68,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.myViewHo
             price = itemView.findViewById(R.id.price);
 
         }
+    }
+    private  OnclickListener onclickListener;
+
+    public void setOnclickListener(OnclickListener onclickListener) {
+        this.onclickListener = onclickListener;
+    }
+
+    public interface OnclickListener{
+        void itemOnclick(View v,String pid);
     }
 }

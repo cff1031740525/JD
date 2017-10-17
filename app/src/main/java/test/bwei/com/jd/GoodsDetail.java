@@ -35,13 +35,18 @@ public class GoodsDetail extends AppCompatActivity {
     private TabLayout tab;
     private List<GoodsDetails> list;
     private List<String> na=new ArrayList<>();
+    private String pid;
+    private String s;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_detail);
+        getSupportActionBar().hide();
         na.add("商品");
         na.add("详情");
         na.add("评价");
+
         initView();
         initData();
     }
@@ -49,11 +54,11 @@ public class GoodsDetail extends AppCompatActivity {
     private void initData() {
 
         Intent intent = getIntent();
-        String pid = intent.getStringExtra("pid");
+        pid = intent.getStringExtra("pid");
         if(!TextUtils.isEmpty(pid)){
             OkHttpClient okHttpClient=new OkHttpClient();
             FormBody.Builder builder=new FormBody.Builder();
-            builder.add("pid",pid);
+            builder.add("pid", pid);
             FormBody formBody=builder.build();
             Request request=new Request.Builder().post(formBody).url(Api.GOODSDETAILS).build();
             okHttpClient.newCall(request).enqueue(new Callback() {
@@ -64,8 +69,9 @@ public class GoodsDetail extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    String s = response.body().string();
-                    if(s!=null){
+                    s = response.body().string();
+                    System.out.println(s +"+++++++++++++");
+                    if(s !=null){
                         Gson gson=new Gson();
                         final GoodsDetails goodsDetails = gson.fromJson(s, GoodsDetails.class);
                         runOnUiThread(new Runnable() {
@@ -111,9 +117,15 @@ public class GoodsDetail extends AppCompatActivity {
             switch (position){
                 case 0:
                 fragment=new GoodsDetailsFrag(context,goodsDetails);
+                    Bundle bundle=new Bundle();
+                    bundle.putString("json",s);
+                    fragment.setArguments(bundle);
                 break;
                 case 1:
                    fragment=new Framgentweb(context,goodsDetails);
+                    Bundle bundles=new Bundle();
+                    bundles.putString("json",s);
+                    fragment.setArguments(bundles);
                     break;
                 case 2:
                     fragment=new Fragment6();

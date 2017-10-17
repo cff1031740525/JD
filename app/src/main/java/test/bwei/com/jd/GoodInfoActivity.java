@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -34,12 +35,13 @@ public class GoodInfoActivity extends AppCompatActivity {
     private RecyclerView rlv;
     private String sort;
     private List<ProductInfo.DataBean> data;
-    private int status=0;
+    private int status = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_info);
+        getSupportActionBar().hide();
         initView();
         initData();
     }
@@ -70,14 +72,24 @@ public class GoodInfoActivity extends AppCompatActivity {
                     data = new ArrayList<>();
                     data = productInfo.data;
                     final ProductAdapter adapter = new ProductAdapter(data, GoodInfoActivity.this);
+                    adapter.setOnclickListener(new ProductAdapter.OnclickListener() {
+                        @Override
+                        public void itemOnclick(View v, String pid) {
+                            Intent intent = new Intent(GoodInfoActivity.this, GoodsDetail.class);
+                            intent.putExtra("pid",pid);
+                            Toast.makeText(GoodInfoActivity.this,pid,Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                        }
+                    });
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             rlv.setLayoutManager(new LinearLayoutManager(GoodInfoActivity.this, LinearLayoutManager.VERTICAL, false));
                             rlv.setAdapter(adapter);
-                            status=1;
+                            status = 1;
                         }
                     });
+
                 }
 
 
@@ -93,16 +105,16 @@ public class GoodInfoActivity extends AppCompatActivity {
     }
 
     public void ggg(View view) {
-        if(status==1){
+        if (status == 1) {
             GridetAdapter adapter = new GridetAdapter(data, GoodInfoActivity.this);
             rlv.setLayoutManager(new GridLayoutManager(GoodInfoActivity.this, 2));
             rlv.setAdapter(adapter);
-            status=0;
-        }else{
+            status = 0;
+        } else {
             ProductAdapter adapter = new ProductAdapter(data, GoodInfoActivity.this);
             rlv.setLayoutManager(new LinearLayoutManager(GoodInfoActivity.this, LinearLayoutManager.VERTICAL, false));
             rlv.setAdapter(adapter);
-            status=1;
+            status = 1;
         }
 
     }
