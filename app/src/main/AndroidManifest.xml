@@ -26,7 +26,8 @@
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".NickActivity" />
         <activity android:name=".GoodInfoActivity" />
-        <activity android:name=".GoodsDetail"></activity>
+        <activity android:name=".GoodsDetail" />
+        <activity android:name=".SousuoActivity"></activity>
     </application>
 
 </manifest>

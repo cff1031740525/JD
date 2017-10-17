@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ import test.bwei.com.jd.Bean.KindBean;
 import test.bwei.com.jd.Bean.Sybean;
 import test.bwei.com.jd.GoodsDetail;
 import test.bwei.com.jd.R;
+import test.bwei.com.jd.SousuoActivity;
 
 /**
  * Created by C on 2017/9/29.
@@ -78,6 +80,7 @@ public class Fragment1 extends Fragment {
 
         }
     };
+    private EditText editText;
 
     @Nullable
     @Override
@@ -231,6 +234,14 @@ public class Fragment1 extends Fragment {
         minute = vv.findViewById(R.id.minute);
         seconds = vv.findViewById(R.id.second);
         miaoshas = vv.findViewById(R.id.miaosha);
+        editText = vv.findViewById(R.id.shouyess);
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), SousuoActivity.class);
+                startActivity(intent);
+            }
+        });
         sw1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

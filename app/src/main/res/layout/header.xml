@@ -24,7 +24,7 @@
         android:layout_height="wrap_content" />
     </LinearLayout>
      <EditText
-
+        android:id="@+id/shouyess"
         android:layout_margin="7dp"
         android:background="@drawable/sousuo"
         android:layout_width="250dp"
