@@ -15,5 +15,7 @@ public static final String USERINFO="http://120.27.23.105/user/getUserInfo";
 public static final String UPDATANICKNAME="http://120.27.23.105/user/updateNickName";
 public static final String GOODSINFO="http://120.27.23.105/product/getProducts";
 public static final String GOODSDETAILS="http://120.27.23.105/product/getProductDetail";
+public static final String SEARCH="http://120.27.23.105/product/searchProducts";
+public static final String ADDCAR="http://120.27.23.105/product/addCart";
 
 }

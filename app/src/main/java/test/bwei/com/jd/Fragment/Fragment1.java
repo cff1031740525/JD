@@ -234,7 +234,7 @@ public class Fragment1 extends Fragment {
         minute = vv.findViewById(R.id.minute);
         seconds = vv.findViewById(R.id.second);
         miaoshas = vv.findViewById(R.id.miaosha);
-        editText = vv.findViewById(R.id.shouyess);
+        editText = v.findViewById(R.id.shouyess);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

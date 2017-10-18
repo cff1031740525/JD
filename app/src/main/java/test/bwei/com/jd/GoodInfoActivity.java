@@ -17,7 +17,9 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -28,6 +30,9 @@ import okhttp3.Response;
 import test.bwei.com.jd.Adapter.GridetAdapter;
 import test.bwei.com.jd.Adapter.ProductAdapter;
 import test.bwei.com.jd.Bean.ProductInfo;
+import test.bwei.com.okhttputils.OkCallback;
+import test.bwei.com.okhttputils.OkHttpMethod;
+import test.bwei.com.okhttputils.OkhttpUtils;
 
 public class GoodInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,19 +46,68 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     private String psdcid;
     private boolean flag=false;
     private EditText sousuo;
+    private Intent intent;
+    private String page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_info);
         getSupportActionBar().hide();
-        Intent intent = getIntent();
+        intent = getIntent();
         psdcid = intent.getStringExtra("pscid");
         initView();
         initData();
     }
 
     private void initData() {
+
+        String json = intent.getStringExtra("mingzi");
+        if(!TextUtils.isEmpty(json)){
+            OkhttpUtils utils=OkhttpUtils.getOkhttpInstance(GoodInfoActivity.this);
+            Map<String,Object> parms=new HashMap<>();
+            parms.put("keywords",json);
+            if(sort!=null){
+                parms.put("sort",sort);
+            }
+            if(page!=null){
+                parms.put("page",page);
+            }
+            utils.call(OkHttpMethod.POST, Api.SEARCH, parms, new OkCallback() {
+                @Override
+                public void onFailure(String e, String msg) {
+
+                }
+
+                @Override
+                public void onResponse(String result) {
+                    ProductInfo productInfo = new Gson().fromJson(result, ProductInfo.class);
+                    data = new ArrayList<>();
+                    data = productInfo.data;
+                    final ProductAdapter adapter = new ProductAdapter(data, GoodInfoActivity.this);
+                    adapter.setOnclickListener(new ProductAdapter.OnclickListener() {
+                        @Override
+                        public void itemOnclick(View v, String pid) {
+                            Intent intent = new Intent(GoodInfoActivity.this, GoodsDetail.class);
+                            intent.putExtra("pid", pid);
+                            Toast.makeText(GoodInfoActivity.this, pid, Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                        }
+                    });
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            rlv.setLayoutManager(new LinearLayoutManager(GoodInfoActivity.this, LinearLayoutManager.VERTICAL, false));
+                            rlv.setAdapter(adapter);
+                            status = 1;
+                        }
+                    });
+                }
+            });
+
+
+        }else{
+
 
         OkHttpClient okHttpClient = new OkHttpClient();
         FormBody.Builder builder = new FormBody.Builder();
@@ -101,6 +155,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
+        }
     }
 
     private void initView() {
