@@ -66,11 +66,11 @@ public class OkhttpUtils {
     public void call(OkHttpMethod okHttpMethod, String url, Map<String, Object> params, final OkCallback okcallback) {
         Request request = null;
         //okhttpclient对象构建者
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder().addInterceptor(new LogInterceptor());
+
         builder.connectTimeout(5, TimeUnit.SECONDS);
         builder.readTimeout(5, TimeUnit.SECONDS);
         builder.writeTimeout(5, TimeUnit.SECONDS);
-
         //okhttpclient对象
         OkHttpClient client = builder.build();
         String mUrl = url+"?";//拼接get请求的url

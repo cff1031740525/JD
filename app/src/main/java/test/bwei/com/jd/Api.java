@@ -17,5 +17,8 @@ public static final String GOODSINFO="http://120.27.23.105/product/getProducts";
 public static final String GOODSDETAILS="http://120.27.23.105/product/getProductDetail";
 public static final String SEARCH="http://120.27.23.105/product/searchProducts";
 public static final String ADDCAR="http://120.27.23.105/product/addCart";
+public static final String GETCART="http://120.27.23.105/product/getCarts";
+    public static final String CHANGECART="http://120.27.23.105/product/updateCarts";
+
 
 }

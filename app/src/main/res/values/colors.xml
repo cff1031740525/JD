@@ -7,4 +7,5 @@
     <color name="hui">#cccc</color>
     <color name="hei">#000</color>
     <color name="red">#f00</color>
+    <color name="divider">#ffd2d2d2</color>
 </resources>

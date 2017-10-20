@@ -39,7 +39,6 @@ public class FatherAdapter extends RecyclerView.Adapter<FatherAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.ptv.setText(list.get(position).name);
         ChildAdapter childAdapter=new ChildAdapter(list.get(position).list,context);
-
         holder.rlv.setLayoutManager(new GridLayoutManager(context,3));
         holder.rlv.setAdapter(childAdapter);
         childAdapter.setItemOnclick(new ChildAdapter.ItemOnclick() {

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/frlv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_above="@+id/relativeLayout3"></android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout3"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+<CheckBox
+    android:id="@+id/sumcb"
+    android:layout_centerVertical="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+        <TextView
+
+            android:text="合计:"
+            android:layout_centerVertical="true"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/sumcb"
+            android:layout_toEndOf="@+id/sumcb"
+            android:id="@+id/sm" />
+        <TextView
+            android:text="¥ 0.00"
+
+            android:textSize="20dp"
+            android:id="@+id/sumprice"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/sm"
+            android:layout_toRightOf="@+id/sm"
+            android:layout_toEndOf="@+id/sm" />
+        <Button
+            android:background="@color/red"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="去结算"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>
